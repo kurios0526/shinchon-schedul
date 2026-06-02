@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신촌교회 예배 섬김 순서표</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --c-bg:#F8F7F4;
+  --c-card:#FFFFFF;
+  --c-border:#E8E4DC;
+  --c-text:#1A1814;
+  --c-text2:#6B6560;
+  --c-text3:#A8A29E;
+  --c-dawn-bg:#EAF3DE;--c-dawn:#2D6A0A;
+  --c-grpA-ev-bg:#EEEDFE;--c-grpA-ev:#3730A3;
+  --c-grpB-ev-bg:#FEF3C7;--c-grpB-ev:#92400E;
+  --c-wed-bg:#DCEEFB;--c-wed:#1058A0;
+  --c-sun-bg:#FEF0D8;--c-sun:#8B4A00;
+  --c-sunpm-bg:#E8F0FE;--c-sunpm:#1A56CC;
+  --c-sat-bg:#FCE4EF;--c-sat:#8C1A45;
+  --c-audio-bg:#EDEDEA;--c-audio:#4A4845;
+  --c-deacon-bg:#F3E8FF;--c-deacon:#6B21A8;
+  --c-grpA:#534AB7;--c-grpA-bg:#EEEDFE;
+  --c-grpB:#854F0B;--c-grpB-bg:#FFF0D6;
+  --c-accent:#2D6A0A;
+  --radius:10px;
+  --shadow:0 1px 4px rgba(0,0,0,0.07);
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--c-bg);color:var(--c-text);min-height:100vh;padding:0 0 40px}
+
+/* ── 헤더 ── */
+.top-bar{background:#fff;border-bottom:1px solid var(--c-border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,0.05)}
+.top-bar h1{font-size:16px;font-weight:700;color:var(--c-text);letter-spacing:-0.3px}
+.top-bar p{font-size:11px;color:var(--c-text3);margin-top:1px}
+.nav-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-btn{background:#fff;border:1px solid var(--c-border);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:15px;color:var(--c-text);font-family:inherit;transition:background .15s}
+.nav-btn:hover{background:var(--c-bg)}
+.month-lbl{font-size:16px;font-weight:600;min-width:90px;text-align:center}
+.auto-btn{padding:7px 16px;font-size:13px;font-weight:500;border:none;border-radius:8px;background:var(--c-dawn);color:#fff;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.auto-btn:hover{opacity:.85}
+.tabs{display:flex;gap:3px;background:var(--c-bg);border-radius:9px;padding:3px}
+.tab{padding:6px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--c-text2);font-family:inherit;transition:background .15s}
+.tab.active{background:#fff;color:var(--c-text);box-shadow:var(--shadow)}
+
+/* ── 범례 ── */
+.legend{display:flex;gap:8px;flex-wrap:wrap;padding:12px 16px;background:#fff;border-bottom:1px solid var(--c-border)}
+.leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--c-text2)}
+.leg-dot{width:10px;height:10px;border-radius:3px}
+
+/* ── 달력 ── */
+.cal-wrap{padding:16px}
+.cal-grid-header{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:2px}
+.dow{text-align:center;font-size:11px;font-weight:600;color:var(--c-text3);padding:6px 0;letter-spacing:.5px}
+.dow:first-child{color:#D44}
+.dow:last-child{color:#44A}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-cell{background:var(--c-card);border-radius:var(--radius);padding:8px 6px;cursor:pointer;transition:box-shadow .15s;border:1.5px solid transparent;min-height:160px}
+.cal-cell:hover{box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.cal-cell.other{background:#F2F1EE;opacity:.5}
+.cal-cell.today{border-color:#6DBE3B}
+.cal-cell.selected{border-color:var(--c-dawn);box-shadow:0 0 0 2px rgba(45,106,10,.15)}
+.day-n{font-size:12px;font-weight:700;margin-bottom:5px;display:block;color:var(--c-text)}
+.cal-cell:nth-child(7n+1) .day-n{color:#D44}
+.cal-cell:nth-child(7n) .day-n{color:#44A}
+.cal-cell.other .day-n{color:var(--c-text3)}
+.ev{font-size:10px;padding:2px 5px;border-radius:4px;margin-bottom:2px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
+.ev-dawn{background:var(--c-dawn-bg);color:var(--c-dawn)}
+.ev-grpA{background:var(--c-grpA-ev-bg);color:var(--c-grpA-ev)}
+.ev-grpB{background:var(--c-grpB-ev-bg);color:var(--c-grpB-ev)}
+.ev-wed{background:var(--c-wed-bg);color:var(--c-wed)}
+.ev-sun{background:var(--c-sun-bg);color:var(--c-sun)}
+.ev-sat{background:var(--c-sat-bg);color:var(--c-sat)}
+.ev-audio{background:var(--c-audio-bg);color:var(--c-audio)}
+
+/* ── 상세 패널 ── */
+.detail{margin:0 16px 16px;background:var(--c-card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);display:none}
+.detail-hd{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.svc-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--c-border);flex-wrap:wrap}
+.svc-row:last-child{border-bottom:none}
+.svc-lbl{font-size:13px;min-width:140px;display:flex;align-items:center;gap:6px}
+.svc-sel{flex:1;min-width:110px;font-size:13px;padding:6px 8px;border:1px solid var(--c-border);border-radius:7px;background:#fff;color:var(--c-text);cursor:pointer;font-family:inherit}
+
+/* ── 배지 ── */
+.badge{font-size:10px;padding:2px 7px;border-radius:99px;white-space:nowrap;display:inline-block;line-height:1.6;font-weight:500}
+.b-dawn{background:var(--c-dawn-bg);color:var(--c-dawn)}
+.b-wed{background:var(--c-wed-bg);color:var(--c-wed)}
+.b-sun{background:var(--c-sun-bg);color:var(--c-sun)}
+.b-sunpm{background:var(--c-sunpm-bg);color:var(--c-sunpm)}
+.b-sat{background:var(--c-sat-bg);color:var(--c-sat)}
+.b-audio{background:var(--c-audio-bg);color:var(--c-audio)}
+.b-deacon{background:var(--c-deacon-bg);color:var(--c-deacon)}
+.b-grpA{background:var(--c-grpA-bg);color:var(--c-grpA)}
+.b-grpB{background:var(--c-grpB-bg);color:var(--c-grpB)}
+
+/* ── 목록 뷰 ── */
+.list-wrap{padding:16px}
+.list-week{margin-bottom:20px}
+.list-wk-title{font-size:13px;font-weight:600;color:var(--c-text2);padding-bottom:6px;border-bottom:1px solid var(--c-border);margin-bottom:8px}
+.list-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;flex-wrap:wrap;border-bottom:1px solid #F2F1EE}
+.list-item:last-child{border-bottom:none}
+.list-date{color:var(--c-text2);min-width:85px;font-size:12px}
+.list-name{font-weight:600;color:var(--c-text)}
+
+/* ── 명단 관리 ── */
+.mgr-wrap{padding:16px}
+.mgr-hd{font-size:16px;font-weight:700;margin-bottom:4px}
+.mgr-sub{font-size:12px;color:var(--c-text3);margin-bottom:16px}
+.mgr-sec{background:var(--c-card);border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.mgr-sec-title{font-size:13px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.mgr-names{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.name-tag{background:var(--c-bg);border:1px solid var(--c-border);border-radius:20px;padding:4px 10px;font-size:12px;display:flex;align-items:center;gap:5px}
+.name-tag button{background:none;border:none;cursor:pointer;color:var(--c-text3);font-size:13px;padding:0;line-height:1}
+.name-tag button:hover{color:#D44}
+.add-row{display:flex;gap:6px}
+.add-inp{flex:1;font-size:13px;padding:7px 10px;border:1px solid var(--c-border);border-radius:7px;font-family:inherit;background:#fff;color:var(--c-text)}
+.add-inp:focus{outline:none;border-color:var(--c-dawn)}
+.add-btn-sm{padding:7px 14px;font-size:13px;border:1px solid var(--c-border);border-radius:7px;background:#fff;cursor:pointer;font-family:inherit;font-weight:500}
+.add-btn-sm:hover{background:var(--c-bg)}
+.empty-note{color:var(--c-text3);font-size:12px;padding:4px 0}
+.evt-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--c-card);border-radius:var(--radius);margin-bottom:8px;box-shadow:var(--shadow);flex-wrap:wrap}
+.evt-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.evt-date{font-size:12px;color:var(--c-text2);min-width:80px}
+.evt-name{font-size:14px;font-weight:500;flex:1}
+.evt-del{background:none;border:none;cursor:pointer;color:var(--c-text3);font-size:16px;padding:0 4px}
+.evt-del:hover{color:#D44}
+.ev-event{border-radius:4px;font-size:10px;padding:2px 5px;margin-bottom:2px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5;font-weight:500}
+
+/* 모바일 */
+@media(max-width:600px){
+  .cal-cell{min-height:110px;padding:5px 3px}
+  .ev{font-size:9px;padding:1px 3px}
+  .day-n{font-size:11px}
+  .top-bar{padding:10px 12px}
+  .cal-wrap{padding:10px}
+  .detail{margin:0 10px 10px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div>
+    <h1>✝ 신촌교회 예배 섬김 순서표</h1>
+    <p>설교·사회·음향·영상 배정 관리</p>
+  </div>
+  <div class="nav-row">
+    <div style="display:flex;align-items:center;gap:6px">
+      <button class="nav-btn" onclick="changeMonth(-1)">&#8249;</button>
+      <span class="month-lbl" id="monthLbl"></span>
+      <button class="nav-btn" onclick="changeMonth(1)">&#8250;</button>
+    </div>
+    <button class="auto-btn" onclick="autoAssignMonth()">↺ 자동 배정</button>
+    <div class="tabs">
+      <button class="tab active" id="tabCal" onclick="switchView('cal')">달력</button>
+      <button class="tab" id="tabList" onclick="switchView('list')">목록</button>
+      <button class="tab" id="tabEvent" onclick="switchView('event')">행사</button>
+      <button class="tab" id="tabSchool" onclick="switchView('school')">교회학교</button>
+      <button class="tab" id="tabYouth" onclick="switchView('youth')">청년부</button>
+      <button class="tab" id="tabMgr" onclick="switchView('mgr')">명단</button>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <span class="leg"><span class="leg-dot" style="background:#EEEDFE;border:1px solid #3730A3"></span>새벽설교 A그룹</span>
+  <span class="leg"><span class="leg-dot" style="background:#FEF3C7;border:1px solid #92400E"></span>새벽설교 B그룹</span>
+  <span class="leg"><span class="leg-dot" style="background:#EDEDEA;border:1px solid #4A4845"></span>음향/영상</span>
+  <span class="leg"><span class="leg-dot" style="background:#DCEEFB;border:1px solid #1058A0"></span>수요</span>
+  <span class="leg"><span class="leg-dot" style="background:#F3E8FF;border:1px solid #6B21A8"></span>권사기도회</span>
+  <span class="leg"><span class="leg-dot" style="background:#FCE4EF;border:1px solid #8C1A45"></span>토요일</span>
+  <span class="leg"><span class="leg-dot" style="background:#FEF0D8;border:1px solid #8B4A00"></span>주일 사회</span>
+  <span class="leg"><span class="leg-dot" style="background:#E8F0FE;border:1px solid #1A56CC"></span>주일 오후예배</span>
+</div>
+
+<div id="viewCal">
+  <div class="cal-wrap">
+    <div class="cal-grid-header">
+      <div class="dow">일</div><div class="dow">월</div><div class="dow">화</div>
+      <div class="dow">수</div><div class="dow">목</div><div class="dow">금</div><div class="dow">토</div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+  <div class="detail" id="detailPanel">
+    <div class="detail-hd" id="detailTitle"></div>
+    <div id="detailRows"></div>
+  </div>
+</div>
+
+<div id="viewList" style="display:none">
+  <div class="list-wrap" id="listWrap"></div>
+</div>
+
+<div id="viewMgr" style="display:none">
+  <div class="mgr-wrap">
+    <div class="mgr-hd">섬김 명단 관리</div>
+    <div class="mgr-sub">✅ 수정하면 자동 저장됩니다. 다음에 열어도 그대로 유지돼요.</div>
+    <div id="mgrContent"></div>
+  </div>
+</div>
+
+<div id="viewEvent" style="display:none">
+  <div class="mgr-wrap">
+    <div class="mgr-hd">📅 교회 행사</div>
+    <div class="mgr-sub">행사를 등록하면 달력에도 표시됩니다.</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+      <input class="add-inp" id="evtDate" type="date" style="width:140px">
+      <input class="add-inp" id="evtName" placeholder="행사명 (예: 성탄절 예배)" style="flex:1;min-width:160px">
+      <input class="add-inp" id="evtColor" type="color" value="#059669" style="width:44px;padding:4px;cursor:pointer">
+      <button class="add-btn-sm" onclick="addEvent()">+ 등록</button>
+    </div>
+    <!-- 주일 이름 등록 -->
+    <div style="background:#FFF8F0;border:1px solid #FED7AA;border-radius:8px;padding:12px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:600;color:#92400E;margin-bottom:8px">🙏 주일 이름 등록 (예: 맥추감사주일, 종려주일)</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input class="add-inp" id="sunNameDate" type="date" style="width:140px">
+        <input class="add-inp" id="sunNameText" placeholder="주일 이름 (예: 맥추감사주일)" style="flex:1;min-width:160px">
+        <button class="add-btn-sm" onclick="addSunName()">+ 등록</button>
+      </div>
+    </div>
+    <div id="evtList"></div>
+  </div>
+</div>
+
+<div id="viewSchool" style="display:none">
+  <div class="mgr-wrap">
+    <div class="mgr-hd">🏫 교회학교 행사 일정</div>
+    <div class="mgr-sub">교회학교 행사와 모임 일정을 등록하세요.</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <input class="add-inp" id="schDate" type="date" style="width:140px">
+      <input class="add-inp" id="schName" placeholder="행사명 (예: 여름성경학교)" style="flex:1;min-width:160px">
+      <select class="add-inp" id="schType" style="width:110px;cursor:pointer">
+        <option value="행사">행사</option>
+        <option value="예배">예배</option>
+        <option value="모임">모임</option>
+        <option value="수련회">수련회</option>
+        <option value="기타">기타</option>
+      </select>
+      <button class="add-btn-sm" onclick="addSchool()">+ 등록</button>
+    </div>
+    <div id="schList"></div>
+  </div>
+</div>
+
+<div id="viewYouth" style="display:none">
+  <div class="mgr-wrap">
+    <div class="mgr-hd">✨ 청년부 행사/모임 일정</div>
+    <div class="mgr-sub">청년부 행사와 모임 일정을 등록하세요.</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <input class="add-inp" id="youthDate" type="date" style="width:140px">
+      <input class="add-inp" id="youthName" placeholder="행사명 (예: 청년부 수련회)" style="flex:1;min-width:160px">
+      <select class="add-inp" id="youthType" style="width:110px;cursor:pointer">
+        <option value="행사">행사</option>
+        <option value="예배">예배</option>
+        <option value="모임">모임</option>
+        <option value="수련회">수련회</option>
+        <option value="기타">기타</option>
+      </select>
+      <button class="add-btn-sm" onclick="addYouth()">+ 등록</button>
+    </div>
+    <div id="youthList"></div>
+  </div>
+</div>
+
+<script>
+// ── 주차별 6월 실제 순서 ────────────────────────────────────
+const SERMON_WEEKS={1:['박현일','박찬수','손세윤','박성진','엄준민'],2:['김희범','두성광','이요한','이효상','박지명'],3:['박찬수','손세윤','박성진','엄준민','박현일']};
+const VIDEO_WEEKS={1:['김요한','이효상','박지명','손세윤','박현일'],2:['박찬수','박성진','엄준민','김희범','두성광'],3:['이요한','김요한','이효상','박지명','손세윤']};
+const AUDIO_WEEKS={1:['손세윤','박현일','박찬수','엄준민','박성진'],2:['엄준민','김희범','두성광','이요한','김요한'],3:['이효상','박지명','손세윤','박현일','박찬수']};
+const SAT_DATA={'2026-06-06':{social:'박찬수',pray1:'김희범',pray2:'이요한'},'2026-06-13':{social:'박성진',pray1:'이요한',pray2:'박현일'},'2026-06-20':{social:'김희범',pray1:'박현일',pray2:'박찬수'},'2026-06-27':{social:'이요한',pray1:'박찬수',pray2:'박성진'}};
+
+const SK_P='shinchon_pastors_v2', SK_A='shinchon_assign_v2', SK_E='shinchon_events_v1',
+      SK_SC='shinchon_school_v1', SK_YT='shinchon_youth_v1', SK_SN='shinchon_sunname_v1';
+const DEF={
+  dawnSermonA:['박현일','박찬수','손세윤','박성진','엄준민'],
+  dawnSermonB:['김희범','두성광','이요한','이효상','박지명'],
+  audioVideo:['김요한','이효상','박지명','손세윤','박현일','박찬수','박성진','엄준민','김희범','두성광','이요한'],
+  wedAM:['수오전1','수오전2','수오전3','수오전4','수오전5','수오전6','수오전7','수오전8'],
+  wedPM:['수저녁1','수저녁2','수저녁3','수저녁4','수저녁5','수저녁6','수저녁7','수저녁8'],
+  satSocial:['박찬수','박성진','김희범','이요한'],
+  satPray:['김희범','이요한','박현일','박찬수','박성진'],
+  sun1:['1부사회1','1부사회2','1부사회3','1부사회4','1부사회5','1부사회6','1부사회7'],
+  sun2:['2부사회1','2부사회2','2부사회3','2부사회4','2부사회5','2부사회6','2부사회7'],
+  sun3:['3부사회1','3부사회2','3부사회3','3부사회4','3부사회5','3부사회6','3부사회7'],
+  sunPM:['주오후1','주오후2','주오후3','주오후4','주오후5','주오후6','주오후7'],
+};
+
+let pastors=JSON.parse(JSON.stringify(DEF));
+let assignments={}, events=[], schoolEvents=[], youthEvents=[], sunNames={};
+let curY=2026,curM=5,selDate=null,curView='cal';
+
+function dk(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+const BASE_DATE=new Date(2026,5,1);
+function getWeekIdx(date){return Math.floor((date-BASE_DATE)/(7*86400000));}
+function getGroup(date){const w=getWeekIdx(date);return (w%2===0)?'A':'B';}
+function juneWk(date){return Math.floor((date-new Date(2026,5,1))/(7*86400000))+1;}
+function isLastWedOfMonth(y,m,d){
+  const date=new Date(y,m,d);
+  if(date.getDay()!==3) return false;
+  return new Date(y,m,d+7).getMonth()!==date.getMonth();
+}
+function save(){
+  try{
+    localStorage.setItem(SK_P,JSON.stringify(pastors));
+    localStorage.setItem(SK_A,JSON.stringify(assignments));
+    localStorage.setItem(SK_E,JSON.stringify(events));
+    localStorage.setItem(SK_SC,JSON.stringify(schoolEvents));
+    localStorage.setItem(SK_YT,JSON.stringify(youthEvents));
+    localStorage.setItem(SK_SN,JSON.stringify(sunNames));
+  }catch(e){}
+}
+function load(){
+  try{
+    const p=localStorage.getItem(SK_P);if(p)pastors=JSON.parse(p);
+    const a=localStorage.getItem(SK_A);if(a)assignments=JSON.parse(a);
+    const e=localStorage.getItem(SK_E);if(e)events=JSON.parse(e);
+    const sc=localStorage.getItem(SK_SC);if(sc)schoolEvents=JSON.parse(sc);
+    const yt=localStorage.getItem(SK_YT);if(yt)youthEvents=JSON.parse(yt);
+    const sn=localStorage.getItem(SK_SN);if(sn)sunNames=JSON.parse(sn);
+  }catch(e){}
+}
+
+function autoAssignMonth(){
+  const days=new Date(curY,curM+1,0).getDate();
+  const cnt={};Object.keys(pastors).forEach(k=>cnt[k]=0);
+  for(let d=1;d<=days;d++){
+    const date=new Date(curY,curM,d);
+    const dow=date.getDay();
+    const key=dk(curY,curM,d);
+    if(!assignments[key])assignments[key]={};
+    const a=assignments[key];
+    if(dow>=1&&dow<=5){
+      const wk=juneWk(date);const di=dow-1;
+      const sl=SERMON_WEEKS[wk],vl=VIDEO_WEEKS[wk],al=AUDIO_WEEKS[wk];
+      if(!a.dawnSermon&&sl&&di<sl.length){a.dawnSermon=sl[di];a.dawnSermon_grp=getGroup(date);}
+      if(!a.dawnBroad&&vl&&di<vl.length)a.dawnBroad=vl[di];
+      if(!a.dawnAudio&&al&&di<al.length)a.dawnAudio=al[di];
+      if(dow===3){
+        if(!a.wedAM){a.wedAM=pastors.wedAM[cnt.wedAM%pastors.wedAM.length];cnt.wedAM++;}
+        if(!a.wedPM){a.wedPM=pastors.wedPM[cnt.wedPM%pastors.wedPM.length];cnt.wedPM++;}
+      }
+    }
+    if(dow===6){const sd=SAT_DATA[key];if(sd){if(!a.satSocial)a.satSocial=sd.social;if(!a.satPray1)a.satPray1=sd.pray1;if(!a.satPray2)a.satPray2=sd.pray2;}}
+    if(dow===0){['sun1','sun2','sun3','sunPM'].forEach(k=>{if(!a[k]){a[k]=pastors[k][cnt[k]%pastors[k].length];cnt[k]++;}});}
+  }
+  save();renderCal();if(selDate)showDetail(selDate);
+}
+
+function renderCal(){
+  document.getElementById('monthLbl').textContent=`${curY}년 ${curM+1}월`;
+  const fd=new Date(curY,curM,1).getDay();
+  const dim=new Date(curY,curM+1,0).getDate();
+  const dip=new Date(curY,curM,0).getDate();
+  const today=new Date();
+  let h='';
+  for(let i=0;i<fd;i++)h+=`<div class="cal-cell other"><span class="day-n">${dip-fd+1+i}</span></div>`;
+  for(let d=1;d<=dim;d++){
+    const key=dk(curY,curM,d);
+    const isT=today.getFullYear()===curY&&today.getMonth()===curM&&today.getDate()===d;
+    const isS=selDate===key;
+    const a=assignments[key]||{};
+    const g=a.dawnSermon_grp||getGroup(new Date(curY,curM,d));
+    let ev='';
+    const dow=new Date(curY,curM,d).getDay();
+    const grpCls=(dow>=1&&dow<=5)?(g==='A'?'ev-grpA':'ev-grpB'):'ev-dawn';
+    if(a.dawnSermon) ev+=`<span class="ev ${grpCls}">${a.dawnSermon}</span>`;
+    if(a.dawnHymn)   ev+=`<span class="ev ${grpCls}" style="opacity:.8">🎵 ${a.dawnHymn}장</span>`;
+    if(a.dawnAudio)  ev+=`<span class="ev ev-audio">🔊${a.dawnAudio}</span>`;
+    if(a.dawnBroad)  ev+=`<span class="ev ev-audio">📷${a.dawnBroad}</span>`;
+    if(a.wedAM)      ev+=`<span class="ev ev-wed">오전 ${a.wedAM}</span>`;
+    if(a.wedPM)      ev+=`<span class="ev ev-wed">저녁 ${a.wedPM}</span>`;
+    if(a.satSocial)  ev+=`<span class="ev ev-sat">사회 ${a.satSocial}</span>`;
+    if(a.satPray1)   ev+=`<span class="ev ev-sat">기도1 ${a.satPray1}</span>`;
+    if(a.satPray2)   ev+=`<span class="ev ev-sat">기도2 ${a.satPray2}</span>`;
+    if(a.sun1)  ev+=`<span class="ev ev-sun">1부 ${a.sun1}</span>`;
+    if(a.sun2)  ev+=`<span class="ev ev-sun">2부 ${a.sun2}</span>`;
+    if(a.sun3)  ev+=`<span class="ev ev-sun">3부 ${a.sun3}</span>`;
+    if(a.sunPM) ev+=`<span class="ev" style="background:var(--c-sunpm-bg);color:var(--c-sunpm)">오후 ${a.sunPM}</span>`;
+    if(isLastWedOfMonth(curY,curM,d)){      const dkn=dk(curY,curM,d);
+      const deaconName=(assignments[dkn]&&assignments[dkn]['_deacon'])||'';
+      ev+=`<span class="ev" style="background:var(--c-deacon-bg);color:var(--c-deacon)">🙏 권사기도회${deaconName?' '+deaconName:''}</span>`;
+    }
+    // 주일 이름 표시
+    if(dow===0 && sunNames[key]) ev+=`<span class="ev" style="background:#FFF7ED;color:#C2410C;font-weight:600">🙏 ${sunNames[key]}</span>`;
+    // 행사 표시
+    events.filter(e=>e.date===key).forEach(e=>{
+      ev+=`<span class="ev-event" style="background:${e.color}22;color:${e.color}">🎉 ${e.name}</span>`;
+    });
+    h+=`<div class="cal-cell${isT?' today':''}${isS?' selected':''}" onclick="showDetail('${key}')"><span class="day-n">${d}</span>${ev}</div>`;
+  }
+  const rem=(7-(fd+dim)%7)%7;
+  for(let i=1;i<=rem;i++)h+=`<div class="cal-cell other"><span class="day-n">${i}</span></div>`;
+  document.getElementById('calGrid').innerHTML=h;
+}
+
+function showDetail(key){
+  selDate=key;
+  const [y,m,d]=key.split('-').map(Number);
+  const dow=new Date(y,m-1,d).getDay();
+  const dn=['일','월','화','수','목','금','토'];
+  const a=assignments[key]||{};
+  const g=a.dawnSermon_grp||'';
+  const panel=document.getElementById('detailPanel');
+  panel.style.display='block';
+  document.getElementById('detailTitle').innerHTML=
+    `${y}년 ${m}월 ${d}일 (${dn[dow]})`+(g?` <span class="badge ${g==='A'?'b-grpA':'b-grpB'}">${g}그룹</span>`:'');
+  if(!assignments[key])assignments[key]={};
+  let rows=[];
+  if(dow>=1&&dow<=5){
+    const wk=juneWk(new Date(y,m-1,d));
+    const sl=SERMON_WEEKS[wk]||pastors['dawnSermon'+(wk%2===1?'A':'B')];
+    rows.push({k:'dawnSermon',lbl:'새벽 설교/사회',cls:g==='A'?'b-grpA':'b-grpB',list:sl,grp:g});
+    rows.push({k:'dawnHymn',lbl:'새벽 찬송가',cls:'b-dawn',type:'hymn'});
+    rows.push({k:'dawnAudio',lbl:'새벽 음향 백업',cls:'b-audio',list:pastors.audioVideo});
+    rows.push({k:'dawnBroad',lbl:'새벽 영상 백업',cls:'b-audio',list:pastors.audioVideo});
+    if(dow===3){
+      rows.push({k:'wedAM',lbl:'수요 오전 사회',cls:'b-wed',list:pastors.wedAM});
+      rows.push({k:'wedPM',lbl:'수요 저녁 설교',cls:'b-wed',list:pastors.wedPM});
+      if(isLastWedOfMonth(y,m-1,d)) rows.push({k:'_deacon',lbl:'권사기도회',cls:'b-deacon',type:'label'});
+    }
+  }
+  if(dow===6){
+    rows.push({k:'satSocial',lbl:'토요 사회',cls:'b-sat',list:pastors.satSocial});
+    rows.push({k:'satPray1',lbl:'기도백업 1',cls:'b-sat',list:pastors.satPray});
+    rows.push({k:'satPray2',lbl:'기도백업 2',cls:'b-sat',list:pastors.satPray});
+  }
+  if(dow===0){
+    rows.push({k:'sun1',lbl:'주일 1부 사회',cls:'b-sun',list:pastors.sun1});
+    rows.push({k:'sun2',lbl:'주일 2부 사회',cls:'b-sun',list:pastors.sun2});
+    rows.push({k:'sun3',lbl:'주일 3부 사회',cls:'b-sun',list:pastors.sun3});
+    rows.push({k:'sunPM',lbl:'주일 오후예배 설교',cls:'b-sunpm',list:pastors.sunPM});
+  }
+  let rh='';
+  rows.forEach(r=>{
+    const cur=a[r.k]||'';
+    const gb=r.grp?`<span class="badge ${r.grp==='A'?'b-grpA':'b-grpB'}">${r.grp}그룹</span>`:'';
+    if(r.type==='hymn'){
+      rh+=`<div class="svc-row"><span class="svc-lbl"><span class="badge ${r.cls}">${r.lbl}</span></span><input type="text" class="svc-sel" placeholder="예) 1장, 찬송가 제목" value="${cur}" oninput="upAssign('${key}','${r.k}',this.value,'')" style="max-width:220px"></div>`;
+      return;
+    }
+    if(r.type==='label'){
+      rh+=`<div class="svc-row"><span class="svc-lbl"><span class="badge ${r.cls}">${r.lbl}</span></span><input type="text" class="svc-sel" placeholder="담당 이름 입력" value="${cur}" oninput="upAssign('${key}','${r.k}',this.value,'')" style="max-width:220px"></div>`;
+      return;
+    }
+    let opts=`<option value="">-- 미배정 --</option>`;
+    (r.list||[]).forEach(p=>opts+=`<option value="${p}"${p===cur?' selected':''}>${p}</option>`);
+    rh+=`<div class="svc-row"><span class="svc-lbl"><span class="badge ${r.cls}">${r.lbl}</span>${gb}</span><select class="svc-sel" onchange="upAssign('${key}','${r.k}',this.value,'${r.grp||''}')">${opts}</select></div>`;
+  });
+  document.getElementById('detailRows').innerHTML=rh||'<span style="color:#A8A29E;font-size:13px">이 날은 배정된 섬김이 없습니다.</span>';
+  renderCal();
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function upAssign(key,k,val,grp){
+  if(!assignments[key])assignments[key]={};
+  assignments[key][k]=val;
+  if(grp)assignments[key][k+'_grp']=grp;
+  save();renderCal();
+}
+
+function renderList(){
+  const days=new Date(curY,curM+1,0).getDate();
+  const dn=['일','월','화','수','목','금','토'];
+  let wks={},wn=[];
+  for(let d=1;d<=days;d++){const w=Math.ceil((d+new Date(curY,curM,1).getDay())/7);if(!wks[w]){wks[w]=[];wn.push(w);}wks[w].push(d);}
+  const sd=[
+    {k:'dawnSermon',lbl:'새벽 설교/사회',cls:'b-dawn',gk:true},
+    {k:'dawnHymn',lbl:'새벽 찬송가',cls:'b-dawn'},
+    {k:'dawnAudio',lbl:'새벽 음향',cls:'b-audio'},{k:'dawnBroad',lbl:'새벽 영상',cls:'b-audio'},
+    {k:'wedAM',lbl:'수요 오전 사회',cls:'b-wed'},{k:'wedPM',lbl:'수요 저녁 설교',cls:'b-wed'},
+    {k:'satSocial',lbl:'토요 사회',cls:'b-sat'},{k:'satPray1',lbl:'기도백업1',cls:'b-sat'},{k:'satPray2',lbl:'기도백업2',cls:'b-sat'},
+    {k:'sun1',lbl:'1부 사회',cls:'b-sun'},{k:'sun2',lbl:'2부 사회',cls:'b-sun'},{k:'sun3',lbl:'3부 사회',cls:'b-sun'},{k:'sunPM',lbl:'오후예배 설교',cls:'b-sunpm'},
+  ];
+  let h='';
+  wn.forEach(w=>{
+    h+=`<div class="list-week"><div class="list-wk-title">${w}주차</div>`;
+    wks[w].forEach(d=>{
+      const dow=new Date(curY,curM,d).getDay();
+      const key=dk(curY,curM,d);
+      const a=assignments[key]||{};
+      sd.forEach(s=>{
+        if(!a[s.k])return;
+        const g=s.gk?(a[s.k+'_grp']||''):'';
+        const gt=g?`<span class="badge ${g==='A'?'b-grpA':'b-grpB'}">${g}</span> `:'';
+        h+=`<div class="list-item"><span class="list-date">${curM+1}/${d}(${dn[dow]})</span><span class="badge ${s.cls}">${s.lbl}</span>${gt}<span class="list-name">${a[s.k]}</span></div>`;
+      });
+      if(dow===3 && isLastWedOfMonth(curY,curM,d)){
+        const deaconName=(a['_deacon'])||'';
+        h+=`<div class="list-item"><span class="list-date">${curM+1}/${d}(수)</span><span class="badge b-deacon">권사기도회</span><span class="list-name" style="color:var(--c-deacon)">${deaconName||'담당 미입력'}</span></div>`;
+      }
+    });
+    h+=`</div>`;
+  });
+  document.getElementById('listWrap').innerHTML=h||'<p style="color:#A8A29E;font-size:13px">자동 배정을 먼저 실행해주세요.</p>';
+}
+
+function renderMgr(){
+  const defs=[
+    {k:'dawnSermonA',lbl:'새벽 설교 — A그룹',cls:'b-dawn',grp:'A'},
+    {k:'dawnSermonB',lbl:'새벽 설교 — B그룹',cls:'b-dawn',grp:'B'},
+    {k:'audioVideo',lbl:'음향/영상 백업 (공통 11명)',cls:'b-audio'},
+    {k:'wedAM',lbl:'수요 오전 사회',cls:'b-wed'},{k:'wedPM',lbl:'수요 저녁 설교',cls:'b-wed'},
+    {k:'satSocial',lbl:'토요 사회',cls:'b-sat'},{k:'satPray',lbl:'기도백업',cls:'b-sat'},
+    {k:'sun1',lbl:'주일 1부 사회',cls:'b-sun'},{k:'sun2',lbl:'주일 2부 사회',cls:'b-sun'},
+    {k:'sun3',lbl:'주일 3부 사회',cls:'b-sun'},{k:'sunPM',lbl:'주일 오후예배 설교',cls:'b-sunpm'},
+  ];
+  let h='';
+  defs.forEach(def=>{
+    const list=pastors[def.k]||[];
+    const gb=def.grp?`<span class="badge ${def.grp==='A'?'b-grpA':'b-grpB'}">${def.grp}그룹</span>`:'';
+    const tags=list.map((p,i)=>`<span class="name-tag">${i+1}. ${p}<button onclick="rmP('${def.k}',${i})" title="삭제">×</button></span>`).join('');
+    h+=`<div class="mgr-sec">
+      <div class="mgr-sec-title"><span class="badge ${def.cls}">${def.lbl}</span>${gb}<span style="color:#A8A29E;font-size:11px">${list.length}명</span></div>
+      <div class="mgr-names">${tags||'<span class="empty-note">등록된 명단 없음</span>'}</div>
+      <div class="add-row">
+        <input class="add-inp" id="inp_${def.k}" placeholder="이름 입력 후 Enter" onkeydown="if(event.key==='Enter')addP('${def.k}')">
+        <button class="add-btn-sm" onclick="addP('${def.k}')">+ 추가</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('mgrContent').innerHTML=h;
+}
+
+function addP(k){const inp=document.getElementById('inp_'+k);const n=inp.value.trim();if(!n)return;if(!pastors[k])pastors[k]=[];pastors[k].push(n);inp.value='';save();renderMgr();}
+function rmP(k,i){pastors[k].splice(i,1);save();renderMgr();}
+
+// ── 주일 이름 ──
+function addSunName(){
+  const d=document.getElementById('sunNameDate').value;
+  const n=document.getElementById('sunNameText').value.trim();
+  if(!d||!n){alert('날짜와 주일 이름을 입력해주세요.');return;}
+  sunNames[d]=n;
+  document.getElementById('sunNameText').value='';
+  save();renderCal();renderEvents();
+}
+
+// ── 교회 행사 ──
+function addEvent(){
+  const date=document.getElementById('evtDate').value;
+  const name=document.getElementById('evtName').value.trim();
+  const color=document.getElementById('evtColor').value;
+  if(!date||!name){alert('날짜와 행사명을 입력해주세요.');return;}
+  events.push({date,name,color});
+  events.sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('evtName').value='';
+  save();renderEvents();renderCal();
+}
+function rmEvent(i){events.splice(i,1);save();renderEvents();renderCal();}
+
+function renderEventList(list,rmFn,color){
+  if(!list.length) return '<p style="color:#A8A29E;font-size:13px;padding:12px 0">등록된 일정이 없습니다.</p>';
+  const byMonth={};
+  list.forEach((e,i)=>{const m=e.date.slice(0,7);if(!byMonth[m])byMonth[m]=[];byMonth[m].push({...e,idx:i});});
+  let h='';
+  Object.entries(byMonth).forEach(([m,evts])=>{
+    const [y,mo]=m.split('-');
+    h+=`<div style="font-size:12px;font-weight:600;color:var(--c-text2);margin:12px 0 6px">${y}년 ${parseInt(mo)}월</div>`;
+    evts.forEach(e=>{
+      const d=new Date(e.date);
+      const dn=['일','월','화','수','목','금','토'][d.getDay()];
+      const [,mo2,day]=e.date.split('-');
+      const typeBadge=e.type?`<span style="font-size:10px;padding:2px 6px;border-radius:99px;background:${color}22;color:${color};margin-right:4px">${e.type}</span>`:'';
+      const dot=e.color?`<span class="evt-dot" style="background:${e.color}"></span>`:'';
+      h+=`<div class="evt-item">${dot}<span class="evt-date">${parseInt(mo2)}/${parseInt(day)}(${dn})</span>${typeBadge}<span class="evt-name">${e.name}</span><button class="evt-del" onclick="${rmFn}(${e.idx})">✕</button></div>`;
+    });
+  });
+  // 주일 이름 목록
+  return h;
+}
+
+function renderEvents(){
+  const wrap=document.getElementById('evtList');
+  if(!wrap)return;
+  // 주일 이름 목록
+  let snHtml='';
+  const snEntries=Object.entries(sunNames).sort((a,b)=>a[0].localeCompare(b[0]));
+  if(snEntries.length){
+    snHtml='<div style="font-size:13px;font-weight:600;margin:16px 0 8px">등록된 주일 이름</div>';
+    snEntries.forEach(([date,name])=>{
+      const d=new Date(date);
+      const dn=['일','월','화','수','목','금','토'][d.getDay()];
+      const [y,mo,day]=date.split('-');
+      snHtml+=`<div class="evt-item"><span style="font-size:18px">🙏</span><span class="evt-date">${parseInt(mo)}/${parseInt(day)}(${dn})</span><span class="evt-name" style="color:#C2410C;font-weight:600">${name}</span><button class="evt-del" onclick="rmSunName('${date}')">✕</button></div>`;
+    });
+  }
+  wrap.innerHTML=renderEventList(events,'rmEvent','#059669')+snHtml;
+}
+function rmSunName(date){delete sunNames[date];save();renderCal();renderEvents();}
+function addSunName(){
+  const d=document.getElementById('sunNameDate').value;
+  const n=document.getElementById('sunNameText').value.trim();
+  if(!d||!n){alert('날짜와 주일 이름을 입력해주세요.');return;}
+  sunNames[d]=n;
+  document.getElementById('sunNameText').value='';
+  save();renderCal();renderEvents();
+}
+
+// ── 교회학교 ──
+function addSchool(){
+  const date=document.getElementById('schDate').value;
+  const name=document.getElementById('schName').value.trim();
+  const type=document.getElementById('schType').value;
+  if(!date||!name){alert('날짜와 행사명을 입력해주세요.');return;}
+  schoolEvents.push({date,name,type});
+  schoolEvents.sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('schName').value='';
+  save();renderSchool();
+}
+function rmSchool(i){schoolEvents.splice(i,1);save();renderSchool();}
+function renderSchool(){
+  const wrap=document.getElementById('schList');
+  if(wrap) wrap.innerHTML=renderEventList(schoolEvents,'rmSchool','#0369A1');
+}
+
+// ── 청년부 ──
+function addYouth(){
+  const date=document.getElementById('youthDate').value;
+  const name=document.getElementById('youthName').value.trim();
+  const type=document.getElementById('youthType').value;
+  if(!date||!name){alert('날짜와 행사명을 입력해주세요.');return;}
+  youthEvents.push({date,name,type});
+  youthEvents.sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('youthName').value='';
+  save();renderYouth();
+}
+function rmYouth(i){youthEvents.splice(i,1);save();renderYouth();}
+function renderYouth(){
+  const wrap=document.getElementById('youthList');
+  if(wrap) wrap.innerHTML=renderEventList(youthEvents,'rmYouth','#7C3AED');
+}
+
+function switchView(v){
+  curView=v;
+  ['cal','list','mgr','event','school','youth'].forEach(t=>{
+    const el=document.getElementById('view'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(el) el.style.display=t===v?'':'none';
+    const tab=document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(tab) tab.classList.toggle('active',t===v);
+  });
+  if(v==='list')renderList();
+  if(v==='mgr')renderMgr();
+  if(v==='event')renderEvents();
+  if(v==='school')renderSchool();
+  if(v==='youth')renderYouth();
+}
+
+function changeMonth(d){
+  curM+=d;if(curM>11){curM=0;curY++;}if(curM<0){curM=11;curY--;}
+  selDate=null;document.getElementById('detailPanel').style.display='none';
+  renderCal();if(curView==='list')renderList();
+}
+
+load();renderCal();
+if(Object.keys(assignments).length===0)autoAssignMonth();
+</script>
+</body>
+</html>
