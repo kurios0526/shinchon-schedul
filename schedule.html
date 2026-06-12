@@ -187,7 +187,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--c-bg);color:var(--c-
   <div>
     <a href="index.html" style="text-decoration:none;color:inherit">
       <h1 style="font-size:16px;font-weight:700;color:var(--c-text)">✝ 신촌교회 All in One</h1>
-      <p style="font-size:11px;color:var(--c-text3);margin-top:1px" id="topSub">설교·사회·음향·방송실 배정</p>
+      <p style="font-size:11px;color:var(--c-text3);margin-top:1px" id="topSub">설교·사회·영상·음향 배정</p>
     </a>
   </div>
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -492,8 +492,8 @@ function renderCal0(){
     if(sunNames[key]) ev+=`<span class="ev ev-sunname">🙏${sunNames[key]}</span>`;
     if(a.dawnSermon) ev+=`<span class="ev ${gc}">${a.dawnSermon}</span>`;
     if(a.dawnHymn)   ev+=`<span class="ev ev-hymn">🎵${a.dawnHymn}장</span>`;
-    if(a.dawnAudio)  ev+=`<span class="ev ev-audio">🔊${a.dawnAudio}</span>`;
     if(a.dawnBroad)  ev+=`<span class="ev ev-audio">📷${a.dawnBroad}</span>`;
+    if(a.dawnAudio)  ev+=`<span class="ev ev-audio">🔊${a.dawnAudio}</span>`;
     if(a.wedAM)      ev+=`<span class="ev ev-wed">오전 ${a.wedAM}</span>`;
     if(a.wedPM)      ev+=`<span class="ev ev-wed">저녁 ${a.wedPM}</span>`;
     if(a.satSocial)  ev+=`<span class="ev ev-sat">사회 ${a.satSocial}</span>`;
@@ -590,8 +590,8 @@ function showDetail0(key){
     const sl=SERMON_WEEKS[wk]||pastors['dawnSermon'+g];
     rows.push({k:'dawnSermon',lbl:'새벽 설교/사회',cls:'b-dawn',list:sl});
     rows.push({k:'dawnHymn',lbl:'새벽 찬송가',cls:'b-dawn',type:'text',ph:'예) 1장, 주여 복을 내리소서'});
-    rows.push({k:'dawnAudio',lbl:'새벽 음향 백업',cls:'b-audio',list:pastors.audioVideo});
     rows.push({k:'dawnBroad',lbl:'새벽 영상 백업',cls:'b-audio',list:pastors.audioVideo});
+    rows.push({k:'dawnAudio',lbl:'새벽 음향 백업',cls:'b-audio',list:pastors.audioVideo});
     if(dow===3){
       rows.push({k:'wedAM',lbl:'수요 오전 사회',cls:'b-wed',list:pastors.wedAM});
       rows.push({k:'wedPM',lbl:'수요 저녁 설교',cls:'b-wed',list:pastors.wedPM});
@@ -729,7 +729,7 @@ function rmYouth(i){youthEvents.splice(i,1);save();renderCal3();document.getElem
 
 // ── 탭 전환 ───────────────────────────────────────────────
 const tabNames=['sermon','event','school','youth','vacation','absence'];
-const tabSubs=['설교·사회·음향·방송실 배정','교회 행사 일정','교회학교 행사 일정','청년부 행사/모임 일정','교역자 휴가 일정','담임목사님 부재시 심방 현황'];
+const tabSubs=['설교·사회·영상·음향 배정','교회 행사 일정','교회학교 행사 일정','청년부 행사/모임 일정','교역자 휴가 일정','담임목사님 부재시 심방 현황'];
 function switchTab(n){
   curTab=n; selDate=null;
   for(let i=0;i<6;i++){
